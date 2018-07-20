@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# app specific
+wayfair_beer/static/img/labels

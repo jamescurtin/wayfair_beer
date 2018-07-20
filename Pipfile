@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask-sqlalchemy = "*"
+arrow = "*"
+requests = "*"
+flask-caching = "*"
+"psycopg2" = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+alembic = "*"
+click = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
