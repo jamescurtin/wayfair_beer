@@ -1,6 +1,128 @@
-<html>
-<header><title>This is title</title></header>
-<body>
-Hello world
-</body>
-</html>
+{% extends "base.html" %} {% block title %} {{ keglocation['location_name'] }} Beer Dashboard {% endblock %} {% block customjs%}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}" type="module"></script>
+{% endblock%} {% block content %}
+<table id="tap-dashboard">
+    <tr id="dashboard_header">
+        {% for tap in taps %}
+        <th>
+            {% if current_beers.get(tap['id']) is not none %} {% set beer = current_beers.get(tap['id']) %}
+            <button id="kicked-button-{{ current_beers.get(tap['id'], {}).get('id') }}" class="kicked-button btn btn-danger">{% if beer['is_tapped'] !=
+                    1 %}Kick this keg{% else %}Unkick Keg{% endif %}</button>
+            <button id="replace-button-{{ tap['id'] }}" class="replace-button btn btn-success" data-toggle="modal" data-target="#tap_new_beer_modal">Tap new beer</button>{%
+            if beer['is_tapped'] != 1 %}
+            <br><br>
+            <div class="rating-wrapper">Rate Me!
+                <div class="rating">
+                    <span class='star' id='{{ tap["id"] }}-5'>☆</span>
+                    <span class='star' id='{{ tap["id"] }}-4'>☆</span>
+                    <span class='star' id='{{ tap["id"] }}-3'>☆</span>
+                    <span class='star' id='{{ tap["id"] }}-2'>☆</span>
+                    <span class='star' id='{{ tap["id"] }}-1'>☆</span>
+                </div>
+            </div>{% endif %} {% endif %}
+        </th>
+        {% endfor %}
+    </tr>
+    <tr id="beer-container">
+        {% for tap in taps %}
+        <td id="beer-info-td-{{ tap['id'] }}">
+            <div id="beer-info-div{{ tap['id'] }}" class="beer-info-div">
+                {% if current_beers.get(tap['id']) is not none %} {% set beer = current_beers.get(tap['id']) %} {% if beer['is_tapped'] !=
+                1 %}
+                <b>{{ beer["name"] }}</b>
+                <p>{{ beer["brewery_name"] }}</p>
+                <img src='/static/img/labels/{{ beer["image"] }}' class='beer-img'>
+                <table>
+                    <tr>
+                        <th>ABV</th>
+                        <th>IBU</th>
+                        <th>Rating</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if beer["abv"] is not none %} {{ beer["abv"] }}% {% else %} N/A {% endif %}
+                        </td>
+                        <td>
+                            {% if beer["ibu"] is not none %} {{ beer["ibu"] }} {% else %} N/A {% endif %}
+                        </td>
+                        <td>{{ beer["untappd_rating"] }}</td>
+                    </tr>
+                </table>
+                <p class="style"><b>Style:</b> {{ beer["style"] }}</p>
+                <div class="desc">
+                    <b>Description:</b> {{ beer["description"] }}
+                </div>
+                {% else %} {% include 'tapped.html' %} {% endif %} {% else %} {% include 'tapped.html' %} {% endif %}
+            </div>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+
+<div id="tap_new_beer_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tap new Beer</h4>
+            </div>
+            <div class="modal-body">
+                <form id="tap_new_beer" autocomplete="off">
+                    <div class="container">
+                        <div class="autocomplete" style="width:300px;">
+                            <label for="brewery"><b>Brewery Name (Optional)</b></label>
+                            <input id="brewery_input" type="text" name="brewery">
+                        </div>
+                        <div class="autocomplete" style="width:300px;">
+                            <label for="beer"><b>Beer Name</b></label>
+                            <input id="beer_input" type="text" name="beer" required>
+                        </div>
+                        <input id="form_tap_id" type="text" name="tap_id" hidden>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input id="submit_tap_new_beer" type="submit" class="btn btn-success" form="tap_new_beer" />
+                <button id="close_search_beer" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="success-modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Success!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                You have submitted a rating.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="select_tapped_beer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="select_tapped_beer_close" type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Which beer did you select?</h4>
+            </div>
+            <div class="modal-body">
+                <img id="status-beer" src="{{ url_for('static', filename='img/status_beer.gif') }}">
+                <div id="beer-options">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close_tap_beer" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

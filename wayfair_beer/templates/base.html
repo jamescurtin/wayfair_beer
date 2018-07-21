@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js">
+
+    </script>
+    <link href="{{ url_for('static', filename='css/wayfair_beer.css') }}" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    {% block customjs %}{% endblock %}
+    <div class="navbar navbar-default" role="navigation">
+        <a class="navbar-left" href="/"><img height="50" src="{{url_for('static',filename='img/wf_beer.png')}}"></a>
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="dropdown-toggle {% if request.endpoint=='index' %}active{%endif %}" data-toggle="dropdown" href="#">On Tap<b class="caret"></b></a>
+                <ul class="dropdown-menu multi-level">
+                    <li style="list-style: none">{% for office in offices %}</li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-toggle" data-toggle="dropdown">{{ office['office_name'] }}</a>
+                        <ul class="dropdown-menu">
+                            <li style="list-style: none">{% for keglocation in office['KegLocations'] %}</li>
+                            <li>
+                                <a href="/?keglocation_id={{keglocation['id']}}">{{ keglocation['location_name'] }}</a>
+                            </li>
+                            <li style="list-style: none">{% endfor %} {% endfor %}</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-toggle {% if request.endpoint=='statistics' %}active{%endif %}" href="/statistics">Beer Statistics</a>
+            </li>
+            <li style="list-style: none">{% if request.endpoint=='index' %}</li>
+            <li>
+                <a id='navbar-title'>{{ self.title() }}</a>
+            </li>
+            <li style="list-style: none">{%endif %}</li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <div id="footer">
+        <p><img height="30px" src="{{url_for('static',filename='img/pbu_40_grey.png')}}">   &#169; {{ now.year }} Made with <span style="color:crimson">&#9829;</span> at Wayfair (Questions: @jacurtin)</p>
+    </div>
+</body>
+
+</html>

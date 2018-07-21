@@ -2,8 +2,9 @@ import os
 from datetime import datetime
 
 from sqlalchemy import MetaData
+from sqlalchemy.sql import text
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import fields
@@ -184,8 +185,82 @@ class RatingSchema(ma.ModelSchema):
         model = Rating
 
 
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
+
+
+@app.context_processor
+def inject_offices():
+    office_schema = OfficeSchema()
+    offices = office_schema.dump(Office.query.all(), many=True).data
+    return {'offices': offices}
+
+
+def whats_on_tap():
+    """All beers currently on tap"""
+    sql = text(
+        '''SELECT id, beer_id, tap_id, tapped_date, name, image, abv, ibu, description, style, untappd_rating, brewery_name, is_tapped
+    FROM (
+    SELECT t.id
+           , t.tap_id
+           , t.beer_id
+           , t.tapped_date
+           , t.is_tapped
+           , b.name
+           , b.image
+           , b.abv
+           , b.ibu
+           , b.description
+           , b.style
+           , b.untappd_rating
+           , br.name brewery_name
+           , ROW_NUMBER() OVER(PARTITION BY tap_id ORDER BY tapped_date DESC) rn
+      FROM on_tap t
+      JOIN beer b
+           ON b.id = t.beer_id
+      JOIN brewery br
+           ON b.brewery_id = br.id
+    ) t
+    WHERE t.rn = 1
+    ORDER BY beer_id
+    ''')
+    records = db.engine.execute(sql).fetchall()
+    results = {}
+    for record in records:
+        result = {}
+        for key, value in record.items():
+            if key != 'tap_id':
+                result[key] = value
+            else:
+                tap_id = value
+        results[tap_id] = result
+    return results
+
 
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template('index.html')
+    """Index page, which defaults to a dashboard displaying which beers are currently on tap"""
+    tap_schema = TapSchema()
+    keglocation_schema = KegLocationSchema()
+
+    keglocation_id = request.args.get('keglocation_id', 1)
+    keglocation_query_response = KegLocation.query.filter_by(id=keglocation_id).first()
+    keglocation_dict = keglocation_schema.dump(keglocation_query_response).data
+
+    taps = Tap.query.filter_by(keglocation_id=keglocation_id).all()
+    taps_dict = tap_schema.dump(taps, many=True).data
+
+    current_beers_dict = whats_on_tap()
+
+    return render_template(
+        'index.html',
+        taps=taps_dict,
+        current_beers=current_beers_dict,
+        keglocation=keglocation_dict)
+
+
+@app.route("/statistics")
+def statistics():
+    return render_template('statistics.html')
