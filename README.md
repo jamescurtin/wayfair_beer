@@ -2,8 +2,10 @@
 
 Dashboard and analytics for the beers Wayfair keeps on tap
 
+![Tap dashboard example](readme_images/dashboard_screenshot.png)
+
 ## [#WayfairHacks18](https://wayfairhacks18.devpost.com/)
-TODO: Add link do pitch deck.
+[Pitch Deck](https://docs.google.com/presentation/d/1fWbTpUF-U3MhZRMSCmPBKTp3q1zZtFAq-Psef3XrU0U/edit?usp=sharing) *Note*: Only accessible on the Wayfair network
 
 ## Dev Setup
 Make sure you have Docker and `docker-compose` (version 3.6+) installed.
