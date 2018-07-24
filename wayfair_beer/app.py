@@ -3,6 +3,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 
 import requests
+from pytz import timezone
 from sqlalchemy import MetaData
 from sqlalchemy.sql import text
 
@@ -276,8 +277,9 @@ def update_kicked_beer():
 def whats_on_tap():
     """All beers currently on tap"""
     sql = text(
-       '''SELECT id, beer_id, tap_id, tapped_date, name, image, abv, ibu
-                 , description, style, untappd_rating, brewery_name, is_tapped
+       '''SELECT id, beer_id, tap_id, tapped_date, name, image,
+                 abv, ibu, description, style, untappd_rating, brewery_name,
+                 is_tapped
    FROM (
    SELECT t.id
           , t.tap_id
@@ -292,7 +294,7 @@ def whats_on_tap():
           , b.style
           , b.untappd_rating
           , br.name brewery_name
-          , ROW_NUMBER() OVER(PARTITION BY tap_id ORDER BY tapped_date DESC) rn
+          , ROW_NUMBER() OVER(PARTITION BY t.tap_id ORDER BY t.tapped_date DESC) rn
      FROM on_tap t
      JOIN beer b
           ON b.id = t.beer_id
@@ -308,7 +310,14 @@ def whats_on_tap():
         result = {}
         for key, value in record.items():
             if key != 'tap_id':
-                result[key] = value
+                if key == 'tapped_date':
+                    tz = timezone('US/Eastern')
+                    utc = timezone('UTC')
+                    tz_aware_dt = utc.localize(value)
+                    local_dt = tz_aware_dt.astimezone(tz)
+                    result[key] = local_dt
+                else:
+                    result[key] = value
             else:
                 tap_id = value
         results[tap_id] = result

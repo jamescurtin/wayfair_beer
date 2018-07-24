@@ -49,6 +49,7 @@
                     </tr>
                 </table>
                 <p class="style"><b>Style:</b> {{ beer["style"] }}</p>
+                <p><b>Last Updated:</b> {{ beer["tapped_date"].strftime('%b %d (%I:%M %p)') }}</p>
                 <div class="desc">
                     <b>Description:</b> {{ beer["description"] }}
                 </div>
