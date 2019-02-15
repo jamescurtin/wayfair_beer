@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block title %} {{ keglocation['location_name'] }} Beer Dashboard {% endblock %} {% block customjs%}
+{% extends "base.html" %} {% block title %} {{ keglocation['location_name'] }} Beer Dashboard {% endblock %}
+{% block customjs%}
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" type="module"></script>
 {% endblock%} {% block content %}
 <table id="tap-dashboard">
@@ -6,9 +7,11 @@
         {% for tap in taps %}
         <th>
             {% if current_beers.get(tap['id']) is not none %} {% set beer = current_beers.get(tap['id']) %}
-            <button id="kicked-button-{{ current_beers.get(tap['id'], {}).get('id') }}" class="kicked-button btn btn-danger">{% if beer['is_tapped'] !=
+            <button id="kicked-button-{{ current_beers.get(tap['id'], {}).get('id') }}"
+                class="kicked-button btn btn-danger">{% if beer['is_tapped'] !=
                     1 %}Kick this keg{% else %}Unkick Keg{% endif %}</button>
-            <button id="replace-button-{{ tap['id'] }}" class="replace-button btn btn-success" data-toggle="modal" data-target="#tap_new_beer_modal">Tap new beer</button>{%
+            <button id="replace-button-{{ tap['id'] }}" class="replace-button btn btn-success" data-toggle="modal"
+                data-target="#tap_new_beer_modal">Tap new beer</button>{%
             if beer['is_tapped'] != 1 %}
             <br><br>
             <div class="rating-wrapper">Rate Me!
@@ -126,4 +129,3 @@
     </div>
 </div>
 {% endblock %}
-

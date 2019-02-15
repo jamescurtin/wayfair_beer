@@ -9,7 +9,7 @@ Dashboard and analytics for the beers Wayfair keeps on tap
 
 ## Dev Setup
 Make sure you have Docker and `docker-compose` (version 3.6+) installed.
-To build the neccesary images:
+To build the necessary images:
 ```
 docker-compose build
 ```
@@ -19,10 +19,10 @@ docker-compose up -d
 ```
 The first time you run, you will need to initialize a database and can optionally seed it with data.
 ```
-docker exec <<DASHBOARD_CONTAINER_NAME>> python manage.py create_schema
-docker exec <<DASHBOARD_CONTAINER_NAME>> python manaage.py seed_data
+docker exec <<DASHBOARD_CONTAINER_NAME>> python manage.py create-schema
+docker exec <<DASHBOARD_CONTAINER_NAME>> python manage.py seed-data
 ```
-Head over to `localhost:8080` to see the site live!
+Head over to `localhost:5000` to see the site live!
 
 Interested to see the logs? Try running:
 ```
@@ -32,10 +32,9 @@ docker logs -t -f <<CONTAINER_NAME>>
 ## Migrations
 Migrations are handled via alembic. To create a new migration, run:
 ```
-docker exec <<DASHBOARD_CONTAINER_NAME>> alembic revision -m "<<MIGRATION DISCRIPTION>>"
+docker exec <<DASHBOARD_CONTAINER_NAME>> alembic revision -m "<<MIGRATION DESCRIPTION>>"
 ```
 Edit the newly created file with the appropriate up and down revisions. To apply the migrations, run:
 ```
 docker exec <<DASHBOARD_CONTAINER_NAME>> alembic upgrade head
 ```
-

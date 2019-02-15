@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   db:
-    image: postgres:10
+    image: postgres:11-alpine
     restart: always
     env_file:
       - .env
@@ -17,13 +17,17 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: ./wayfair_beer/Dockerfile
+      dockerfile: ./docker/wayfair_beer.dockerfile
     env_file:
       - .env
     environment:
       - HOST_FLASK_PORT=${HOST_FLASK_PORT}
       - UNTAPPD_CLIENT_ID=${UNTAPPD_CLIENT_ID}
       - UNTAPPD_CLIENT_SECRET=${UNTAPPD_CLIENT_SECRET}
+      - VIRTUAL_HOST=${NGINX_PROXY_VIRTUAL_HOST}
+      - VIRTUAL_PORT=5000
+      - LETSENCRYPT_HOST=${NGINX_PROXY_VIRTUAL_HOST}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     ports:
       - 5000:5000
     volumes:
@@ -38,21 +42,43 @@ services:
       - db:database
     command: ["python", "manage.py", "run"]
 
-  nginx:
-    image: nginx:1.15
-    env_file:
-      - .env
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
     ports:
-      - ${HOST_FLASK_PORT}:80
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./conf.d:/etc/nginx/conf.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ~/.certs/:/etc/nginx/certs:ro
+      - nginx_proxy_vhost:/etc/nginx/vhost.d
+      - nginx_proxy_html:/usr/share/nginx/html
     networks:
       - web_nw
+    restart: always
+    logging:
+      options:
+        max-size: 5m
+        max-file: "10"
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion:v1.9.1
+    networks:
+      - web_nw
+    volumes:
+      - ~/.certs/:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx_proxy_vhost:/etc/nginx/vhost.d
+      - nginx_proxy_html:/usr/share/nginx/html
     depends_on:
-      - wayfair_beer
+      - nginx-proxy
+
 
 volumes:
   db:
+  nginx_proxy_vhost:
+  nginx_proxy_html:
 
 networks:
   db_nw:

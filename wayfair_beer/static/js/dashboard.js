@@ -8,7 +8,7 @@ import {
 */
 function toggle_kicked_keg() {
     var button = $(".kicked-button")
-    button.click(function() {
+    button.click(function () {
         var buttonid = $(this).attr("id")
         var ontap_id = buttonid.split("-").pop();
         $.ajax({
@@ -18,7 +18,7 @@ function toggle_kicked_keg() {
             , data: {
                 "ontap_id": ontap_id
             }
-        }).done(function(beers) {
+        }).done(function (beers) {
             window.location.reload();
         });
     });
@@ -29,7 +29,7 @@ function toggle_kicked_keg() {
 */
 function record_rating() {
     var rating = $(".star")
-    rating.click(function() {
+    rating.click(function () {
         var clicked = $(this).attr('id')
         var clicked_elements = clicked.split("-")
         $.post("/record_rating", {
@@ -37,7 +37,7 @@ function record_rating() {
             , rating: clicked_elements[1]
         });
         $('#success-modal').modal('show')
-        setTimeout(function() {
+        setTimeout(function () {
             $('#success-modal').modal('hide')
         }, 1500);
     })
@@ -53,7 +53,7 @@ function autocomplete_adding_beer() {
         , type: "POST"
         , dataType: "json"
         , data: {}
-    }).done(function(breweries) {
+    }).done(function (breweries) {
         autocomplete(document.getElementById("brewery_input"), breweries);
     });
     $.ajax({
@@ -61,7 +61,7 @@ function autocomplete_adding_beer() {
         , type: "POST"
         , dataType: "json"
         , data: {}
-    }).done(function(beers) {
+    }).done(function (beers) {
         autocomplete(document.getElementById("beer_input"), beers);
     });
 }
@@ -71,7 +71,7 @@ function autocomplete_adding_beer() {
  * tapped
 */
 function update_beer() {
-    $(".select-beer").click(function() {
+    $(".select-beer").click(function () {
         var this_id_attrs = $(this).attr("id").split('-')
         var tap_id = this_id_attrs.pop();
         var beer_id = this_id_attrs.pop();
@@ -83,7 +83,7 @@ function update_beer() {
                 "tap_id": tap_id
                 , "beer_id": beer_id
             }
-        }).done(function(beers) {
+        }).done(function (beers) {
             window.location.reload();
         });
     })
@@ -93,10 +93,10 @@ function update_beer() {
  * Add a new beer to the database if it cannot be found in the Untappd database
 */
 function manually_enter_beer(form_data) {
-    $("#select_tapped_beer_close").click(function() {
+    $("#select_tapped_beer_close").click(function () {
         $("#beer-options").empty();
     })
-    $(".new-selected-beer-none").click(function() {
+    $(".new-selected-beer-none").click(function () {
         var this_id_attrs = $(this).attr("id").split('-')
         var tap_id = this_id_attrs.pop();
         $.ajax({
@@ -107,7 +107,7 @@ function manually_enter_beer(form_data) {
                 "tap_id": tap_id
                 , "beer_id": 1
             }
-        }).done(function(beers) {
+        }).done(function (beers) {
             window.location.reload();
         });
     })
@@ -115,10 +115,10 @@ function manually_enter_beer(form_data) {
 
 
 function clear_modals() {
-    $("#close_tap_beer").click(function() {
+    $("#close_tap_beer").click(function () {
         $("#beer-options").empty();
     })
-    $("#close_search_beer").click(function() {
+    $("#close_search_beer").click(function () {
         $("#tap_new_beer").reset();
     })
 };
@@ -130,7 +130,7 @@ function select_beer_to_tap(json, form_data) {
     beer_status.show();
     $("<tr><th>Brewery</th><th>Beer</th><th>Image</th><th></th></tr>").appendTo(option_table);
     var tap_id = json['tap_id'];
-    $.each(json['beers'], function(index, beer) {
+    $.each(json['beers'], function (index, beer) {
         var beer_row = $('<tr></tr>')
         var beer_data = $(
             `
@@ -168,14 +168,14 @@ function select_beer_to_tap(json, form_data) {
 };
 
 function close_modal_on_submit() {
-    $('#tap_new_beer').submit(function(e) {
+    $('#tap_new_beer').submit(function (e) {
         var form_data = $("#tap_new_beer").serialize()
         $.ajax({
             type: "POST"
             , url: "/tap_new_beer"
             , dataType: "json"
             , data: form_data
-        }).done(function(json) {
+        }).done(function (json) {
             select_beer_to_tap(json, form_data);
         });
         $('#tap_new_beer_modal').modal('hide');
@@ -185,7 +185,7 @@ function close_modal_on_submit() {
     });
 }
 
-$('#tap_new_beer_modal').on('show.bs.modal', function(e) {
+$('#tap_new_beer_modal').on('show.bs.modal', function (e) {
     var button_id = $(e.relatedTarget).attr('id')
     var tap_id = button_id.split("-").pop()
     $("#form_tap_id").val(tap_id)
@@ -195,13 +195,13 @@ function resize_main_container() {
     var $header = $('.navbar');
     var $footer = $('#footer');
     var $content = $('#content');
-    var $window = $(window).on('resize', function() {
+    var $window = $(window).on('resize', function () {
         var height = $(this).height() - $header.height() + $footer.height();
         $content.height(height);
     }).trigger('resize');
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
     $("#body").css("min-height", screen.height);
     resize_main_container();
     toggle_kicked_keg();
