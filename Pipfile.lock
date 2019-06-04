@@ -25,11 +25,11 @@
         },
         "arrow": {
             "hashes": [
-                "sha256:002f2315cf4c8404de737c42860441732d339bbc57fee584e2027520e055ecc1",
-                "sha256:82dd5e13b733787d4eb0fef42d1ee1a99136dc1d65178f70373b3678b3181bfc"
+                "sha256:2d30837085011ef0b90ff75aa0a28f5c7d063e96b7e76b6cbc7e690310256685",
+                "sha256:e4c4157d9f5eb7f850ffdcedd0cc1454ff677881deee03434a5705dc19192042"
             ],
             "index": "pypi",
-            "version": "==0.13.2"
+            "version": "==0.14.1"
         },
         "certifi": {
             "hashes": [
