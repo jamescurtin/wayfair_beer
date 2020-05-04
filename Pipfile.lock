@@ -25,11 +25,11 @@
         },
         "arrow": {
             "hashes": [
-                "sha256:5390e464e2c5f76971b60ffa7ee29c598c7501a294bc9f5e6dadcb251a5d027b",
-                "sha256:70729bcc831da496ca3cb4b7e89472c8e2d27d398908155e0796179f6d2d41ee"
+                "sha256:a24c1de90850f6fb2033fd6bf8a11f281e84cb54825e5eabdda219e673b52aac",
+                "sha256:eb5d339f00072cc297d7de252a2e75f272085d1231a3723f1026d1fa91367118"
             ],
             "index": "pypi",
-            "version": "==0.15.5"
+            "version": "==0.15.6"
         },
         "certifi": {
             "hashes": [
@@ -152,10 +152,10 @@
         },
         "marshmallow": {
             "hashes": [
-                "sha256:90854221bbb1498d003a0c3cc9d8390259137551917961c8b5258c64026b2f85",
-                "sha256:ac2e13b30165501b7d41fc0371b8df35944f5849769d136f20e2c5f6cdc6e665"
+                "sha256:56663fa1d5385c14c6a1236badd166d6dee987a5f64d2b6cc099dadf96eb4f09",
+                "sha256:f12203bf8d94c410ab4b8d66edfde4f8a364892bde1f6747179765559f93d62a"
             ],
-            "version": "==3.5.1"
+            "version": "==3.5.2"
         },
         "marshmallow-sqlalchemy": {
             "hashes": [
