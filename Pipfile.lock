@@ -157,11 +157,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:8c501196e49fb9df5df43833bdb1e4328f64847763ec8a50703148b73784d581",
-                "sha256:d7eb1dea6d6a6086f8be21784cc9e3bcfa55872b52309bc5fad53a8ea444465d"
+                "sha256:057e92c15bc8d9e8109738a48db0ccb31b4d9d5cfbee5a8670879a30be66304b",
+                "sha256:b7e52a1f8dec14a75ea73e0891f3060099ca1d8e6a462a4dff11c3e119ea1b31"
             ],
             "markers": "python_version < '3.8'",
-            "version": "==4.0.1"
+            "version": "==4.2.0"
         },
         "itsdangerous": {
             "hashes": [
@@ -232,11 +232,11 @@
         },
         "marshmallow-sqlalchemy": {
             "hashes": [
-                "sha256:f1491f83833ac9c8406ba603458b1447fdfd904194833aab4b3cc01ef3646944",
-                "sha256:f861888ae3299f2c1f18cd94f02147ced70cd1b4986b2c5077e4a1036018d2a2"
+                "sha256:4cef3d7f275978e2fb502c8693365a5ebe86921d9d021ad2e7401a2e2e3f97a3",
+                "sha256:cc335437f74427e47a2fdd68f1c2836c60643a001a1fea602ebd4114ce3f75b0"
             ],
             "index": "pypi",
-            "version": "==0.25.0"
+            "version": "==0.26.0"
         },
         "psycopg2": {
             "hashes": [
@@ -343,10 +343,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df",
-                "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
+                "sha256:753a0374df26658f99d826cfe40394a686d05985786d946fbe4165b5148f5a7c",
+                "sha256:a7acd0977125325f516bda9735fa7142b909a8d01e8b2e4c8108d0984e6e0098"
             ],
-            "version": "==1.26.4"
+            "version": "==1.26.5"
         },
         "werkzeug": {
             "hashes": [
