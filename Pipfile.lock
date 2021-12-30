@@ -289,11 +289,11 @@
         },
         "marshmallow-sqlalchemy": {
             "hashes": [
-                "sha256:ba7493eeb8669a3bf00d8f906b657feaa87a740ae9e4ecf829cfd6ddf763d276",
-                "sha256:d8525f74de51554b5c8491effe036f60629a426229befa33ff614c8569a16a73"
+                "sha256:1521b129564444648c523a38f6446c137f1aae5c9c7de1ec151d5ebf03fd407d",
+                "sha256:a11fdb628e78c70853646cd7d6d56e07fd56cc702e9675f9abb34832ea055ffe"
             ],
             "index": "pypi",
-            "version": "==0.26.1"
+            "version": "==0.27.0"
         },
         "psycopg2": {
             "hashes": [
